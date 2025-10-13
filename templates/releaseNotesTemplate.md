@@ -67,34 +67,8 @@ No commits associated with pull requests for this build.
 | State | {{lookup this.fields 'System.State'}} |
 | Assigned To | {{#with (lookup this.fields 'System.AssignedTo')}}{{displayName}}{{else}}Unassigned{{/with}} |
 | Tags | {{lookup this.fields 'System.Tags'}} |
-| Feature | {{!-- look for parent with type Feature --}}
-{{#if this.relations}}
-   {{#forEach this.relations}}
-      {{#if (contains this.attributes.name 'Parent')}}
-         {{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}
-            {{#if (contains (lookup this.fields 'System.WorkItemType') 'Feature')}}{{lookup this.fields 'System.Title'}}{{/if}}
-         {{/with}}
-      {{/if}}
-   {{/forEach}}
-{{/if}} |
-| Epic | {{!-- look for parent or grandparent with type Epic --}}
-{{#if this.relations}}
-   {{#forEach this.relations}}
-      {{#if (contains this.attributes.name 'Parent')}}
-         {{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}
-            {{#if (contains (lookup this.fields 'System.WorkItemType') 'Epic')}}{{lookup this.fields 'System.Title'}}{{else}}
-               {{#forEach this.relations}}
-                  {{#if (contains this.attributes.name 'Parent')}}
-                     {{#with (lookup_a_work_item ../../../../relatedWorkItems this.url)}}
-                        {{#if (contains (lookup this.fields 'System.WorkItemType') 'Epic')}}{{lookup this.fields 'System.Title'}}{{/if}}
-                     {{/with}}
-                  {{/if}}
-               {{/forEach}}
-            {{/if}}
-         {{/with}}
-      {{/if}}
-   {{/forEach}}
-{{/if}} |
+| Feature | {{#each this.relations}}{{#if (contains this.attributes.name 'Parent')}}{{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}{{#if (contains (lookup this.fields 'System.WorkItemType') 'Feature')}}{{lookup this.fields 'System.Title'}}{{/if}}{{/with}}{{/if}}{{/each}} |
+| Epic | {{#each this.relations}}{{#if (contains this.attributes.name 'Parent')}}{{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}{{#if (contains (lookup this.fields 'System.WorkItemType') 'Epic')}}{{lookup this.fields 'System.Title'}}{{else}}{{#each this.relations}}{{#if (contains this.attributes.name 'Parent')}}{{#with (lookup_a_work_item ../../../../relatedWorkItems this.url)}}{{#if (contains (lookup this.fields 'System.WorkItemType') 'Epic')}}{{lookup this.fields 'System.Title'}}{{/if}}{{/with}}{{/if}}{{/each}}{{/if}}{{/with}}{{/if}}{{/each}} |
 
 **Description**
 
