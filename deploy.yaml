@@ -9,9 +9,6 @@ stages:
     steps:
     - script: echo "Building..."
 
-  - job: DeployJob
-    dependsOn: BuildJob
-    steps:
     - script: echo "Deploying..."
 
     - task: XplatGenerateReleaseNotes@4
