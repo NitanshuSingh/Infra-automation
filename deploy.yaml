@@ -16,3 +16,19 @@ stages:
   - job: DeployJob
     steps:
     - script: echo "Deploying..."
+
+    - task: XplatGenerateReleaseNotes@4
+      inputs:
+        outputfile: '$(Build.ArtifactStagingDirectory)/releaseNotes.md'
+        templateLocation: 'File'
+        templatefile: '$(Build.SourcesDirectory)/templates/releaseNotesTemplate.md'
+        dumpPayloadToConsole: false
+        dumpPayloadToFile: false
+        replaceFile: True
+        getParentsAndChildren: False
+        getAllParents: True
+        getIndirectPullRequests: False
+        stopOnError: False
+        considerPartiallySuccessfulReleases: False
+        checkForManuallyLinkedWI: False
+        wiqlFromTarget: 'WorkItems'
