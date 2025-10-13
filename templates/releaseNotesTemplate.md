@@ -22,8 +22,8 @@
 # Global list of WI with PRs, parents and children
 {{#forEach this.workItems}}
 {{#if isFirst}}### WorkItems {{/if}}
-*  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
-   - **WIT** {{lookup this.fields 'System.WorkItemType'}}
+*  **#WorkItemID-{{this.id}}**  {{lookup this.fields 'System.Title'}}
+   - **WIT-Type** {{lookup this.fields 'System.WorkItemType'}}
    - **Tags** {{lookup this.fields 'System.Tags'}}
    - **Assigned** {{#with (lookup this.fields 'System.AssignedTo')}} {{displayName}} {{/with}}
    - **Description** {{{lookup this.fields 'System.Description'}}}
@@ -57,13 +57,4 @@
       - {{this.id}} - {{lookup this.fields 'System.Title'}}
 {{/with}}
 {{/if}}
-{{/forEach}}
-   - **Tested By**
-{{#forEach this.relations}}
-{{#if (contains this.attributes.name 'Tested By')}}
-{{#with (lookup_a_work_item ../../testedByWorkItems  this.url)}}
-      - {{this.id}} - {{lookup this.fields 'System.Title'}}
-{{/with}}
-{{/if}}
-{{/forEach}}
 {{/forEach}}
