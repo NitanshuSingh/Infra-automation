@@ -9,10 +9,8 @@ stages:
     steps:
     - script: echo "Building..."
 
-- stage: Deploy
-  dependsOn: Build
-  jobs:
   - job: DeployJob
+    dependsOn: BuildJob
     steps:
     - script: echo "Deploying..."
 
