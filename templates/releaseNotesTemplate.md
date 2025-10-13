@@ -9,22 +9,34 @@
 
 | ID | Type | Title | Feature | Epic |
 |----|------|-------|---------|------|
-{{#forEach workItems}}
-| {{id}} 
-| {{lookup fields 'System.WorkItemType'}} 
-| [{{lookup fields 'System.Title'}}]({{replace url '_apis/wit/workItems' '_workitems/edit'}}) 
-| {{#each (lookup . 'parents')}}{{#if (eq (lookup fields 'System.WorkItemType') 'Feature')}}[{{lookup fields 'System.Title'}}]({{replace url '_apis/wit/workItems' '_workitems/edit'}}){{/if}}{{/each}} 
-| {{#each (lookup . 'parents')}}{{#if (eq (lookup fields 'System.WorkItemType') 'Epic')}}[{{lookup fields 'System.Title'}}]({{replace url '_apis/wit/workItems' '_workitems/edit'}}){{/if}}{{/each}} |
-{{/forEach}}
+{{#each workItems}}
+| {{this.id}} 
+| {{lookup this.fields 'System.WorkItemType'}} 
+| [{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}}) 
+| {{#with (lookup this 'parents')}}
+  {{#each this}}
+    {{#if (eq (lookup this.fields 'System.WorkItemType') 'Feature')}}
+      [{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}})
+    {{/if}}
+  {{/each}}
+{{/with}} 
+| {{#with (lookup this 'parents')}}
+  {{#each this}}
+    {{#if (eq (lookup this.fields 'System.WorkItemType') 'Epic')}}
+      [{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}})
+    {{/if}}
+  {{/each}}
+{{/with}} |
+{{/each}}
 
 ---
 
 ## 🔀 Pull Requests
 
 {{#if pullRequests.length}}
-{{#forEach pullRequests}}
-* [{{title}}]({{replace (replace url '_apis/git/repositories' '_git') 'pullRequests' 'pullRequest'}})
-{{/forEach}}
+{{#each pullRequests}}
+- [{{this.title}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}})
+{{/each}}
 {{else}}
 _No pull requests associated with this build._
 {{/if}}
