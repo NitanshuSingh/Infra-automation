@@ -5,7 +5,7 @@
 
 ---
 
-## 🧩 User Stories
+## 🧩 Work Items
 
 {{#if workItems.length}}
 {{#forEach workItems}}
@@ -17,10 +17,15 @@
 **Description:**  
 {{{this.fields['System.Description']}}}
 
-{{#if this.fields['System.Parent']}}
-> 🔗 Parent Feature/Epic ID: **{{this.fields['System.Parent']}}**  
+{{#if this.parents.length}}
+#### 🔗 Parent Work Items
+
+{{#forEach this.parents}}
+- **{{this.fields['System.WorkItemType']}}**: {{this.fields['System.Title']}}
+{{/forEach}}
 {{/if}}
 
+---
 {{/forEach}}
 {{else}}
 ⚠️ No work items linked to this build.
