@@ -31,5 +31,19 @@ stages:
         targetPath: '$(Pipeline.Workspace)'
         artifact: 'ReleaseNotes'
         publishLocation: 'pipeline'
-
-        
+    
+    - task: WikiUpdaterTask@2
+      inputs:
+        repo: 'https://dev.azure.com/ShruBookStore/Migration%20work/_git/ReleaseNotes'
+        branch: 'main'
+        filename: 'Root-page/ReleaseVersions.md'
+        replaceFile: false
+        appendToFile: true
+        dataIsFile: true
+        sourceFile: '$(Build.ArtifactStagingDirectory)/releasenotes.md'
+        message: 'Automatic commit from pipeline'
+        gitname: 'pipeline'
+        gitemail: 'nitanshusingh55@gmail.com'
+        useAgentToken: true
+        localpath: '$(System.DefaultWorkingDirectory)\repo'
+        RetryMode: 'Pull'
