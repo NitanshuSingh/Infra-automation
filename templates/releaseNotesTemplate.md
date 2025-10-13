@@ -1,24 +1,24 @@
-    # {{buildDetails.buildNumber}}
-    {{buildDetails.startTime}}
+# 🚀 Release Notes - {{buildDetails.buildNumber}}
 
-    **Work Items**
-    |Id|Type|Title|
-    |-|-|-|
-    {{#forEach this.workItems}}
-    |{{this.id}}|{{lookup this.fields 'System.WorkItemType'}}|[{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}})|
-    {{/forEach}}
+**Release Date:** {{buildDetails.startTime}}  
+**Triggered By:** {{buildDetails.requestedFor.displayName}}
 
-    **Pull Requests**
-    {{#forEach pullRequests}}
-    * [{{this.title}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}})
-    {{/forEach}}
-    
-    checkStage: true
-    replaceFile: false
-    getParentsAndChildren: false
-    getAllParents: false
-    getIndirectPullRequests: false
-    stopOnError: false
-    considerPartiallySuccessfulReleases: false
-    checkForManuallyLinkedWI: false
-    wiqlFromTarget: 'WorkItems'
+---
+
+## 📌 Work Items
+
+| ID | Type | Title | Feature | Epic |
+|----|------|-------|---------|------|
+{{#forEach workItems}}
+| {{id}} | {{lookup fields 'System.WorkItemType'}} | [{{lookup fields 'System.Title'}}]({{replace url "_apis/wit/workItems" "_workitems/edit"}}) | 
+{{#with (lookup this 'parents')}}
+  {{#each this}}
+    {{#if (eq (lookup fields 'System.WorkItemType') 'Feature')}}
+      [{{lookup fields 'System.Title'}}]({{replace url "_apis/wit/workItems" "_workitems/edit"}})
+    {{/if}}
+  {{/each}}
+{{else}} - {{/with}} | 
+{{#with (lookup this 'parents')}}
+  {{#each this}}
+    {{#if (eq (lookup fields 'System.WorkItemType') 'Epic')}}
+      [{{lookup fields 'System.Title'}}]({{replace url "_apis/wit/workItem_)
