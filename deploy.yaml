@@ -26,3 +26,8 @@ stages:
         considerPartiallySuccessfulReleases: False
         checkForManuallyLinkedWI: False
         wiqlFromTarget: 'WorkItems'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'ReleaseNotes'
+        publishLocation: 'pipeline'
