@@ -43,15 +43,7 @@ stages:
         sourceFile: '$(Build.ArtifactStagingDirectory)/releasenotes.md'
         message: 'Automatic commit from pipeline'
         gitname: 'pipeline'
-<<<<<<< HEAD
-        gitemail: 'pipeline@example.com'
-        useAgentToken: true
-        localpath: '$(System.DefaultWorkingDirectory)\repo'
-
-        
-=======
         gitemail: 'nitanshusingh55@gmail.com'
         useAgentToken: true
         localpath: '$(System.DefaultWorkingDirectory)\repo'
         RetryMode: 'Pull'
->>>>>>> de06bd28128980b60ea8854040c43635e3726cc8
