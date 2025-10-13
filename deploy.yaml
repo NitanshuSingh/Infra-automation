@@ -31,5 +31,18 @@ stages:
         targetPath: '$(Pipeline.Workspace)'
         artifact: 'ReleaseNotes'
         publishLocation: 'pipeline'
+    - task: WikiUpdaterTask@2
+      inputs:
+        repo: 'https://dev.azure.com/m-w/MyProduct/_git/ExampleWiki'
+        branch: 'main'
+        filename: 'Root-page/MyProduct-Versions.md'
+        replaceFile: false
+        dataIsFile: true
+        sourceFile: '$(Build.ArtifactStagingDirectory)/releasenotes.md'
+        message: 'Automatic commit from pipeline'
+        gitname: 'pipeline'
+        gitemail: 'pipeline@example.com'
+        useAgentToken: true
+        localpath: '$(System.DefaultWorkingDirectory)\repo'
 
         
