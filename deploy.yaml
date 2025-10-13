@@ -19,7 +19,7 @@ stages:
         dumpPayloadToConsole: True
         dumpPayloadToFile: false
         replaceFile: True
-        getParentsAndChildren: False
+        getParentsAndChildren: True
         getAllParents: True
         getIndirectPullRequests: False
         stopOnError: False
