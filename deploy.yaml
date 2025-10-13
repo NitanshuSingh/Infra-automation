@@ -31,3 +31,5 @@ stages:
         targetPath: '$(Pipeline.Workspace)'
         artifact: 'ReleaseNotes'
         publishLocation: 'pipeline'
+
+        
