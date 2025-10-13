@@ -16,7 +16,7 @@ stages:
         outputfile: '$(Build.ArtifactStagingDirectory)/releaseNotes.md'
         templateLocation: 'File'
         templatefile: '$(Build.SourcesDirectory)/templates/releaseNotesTemplate.md'
-        dumpPayloadToConsole: false
+        dumpPayloadToConsole: True
         dumpPayloadToFile: false
         replaceFile: True
         getParentsAndChildren: False

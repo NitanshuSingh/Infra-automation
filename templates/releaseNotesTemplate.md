@@ -5,29 +5,31 @@
 
 ---
 
-## 🧩 Features & Epics
+## 📦 User Stories in this Release
 
 {{#if workItems.length}}
 {{#forEach workItems}}
-### 🔖 {{this.fields.System.Title}}
-
-**Type:** {{this.fields.System.WorkItemType}}  
-**Assigned To:** {{#if this.fields.System.AssignedTo}}{{this.fields.System.AssignedTo.displayName}}{{else}}Unassigned{{/if}}  
+{{#if (eq this.fields['System.WorkItemType'] 'User Story')}}
+### 📝 {{this.fields['System.Title']}}
 
 **Description:**  
-{{{this.fields.System.Description}}}
+{{{this.fields['System.Description']}}}
+
+**Assigned To:** {{#if this.fields['System.AssignedTo']}}{{this.fields['System.AssignedTo'].displayName}}{{else}}Unassigned{{/if}}
 
 {{#if this.parents.length}}
-#### 🔗 Parent(s)
+#### 🔗 Parent Links
 {{#forEach this.parents}}
-- **{{this.fields.System.WorkItemType}}**: {{this.fields.System.Title}}
+
+- **{{this.fields['System.WorkItemType']}}**: {{this.fields['System.Title']}}
+
 {{/forEach}}
 {{/if}}
 
 ---
+
+{{/if}}
 {{/forEach}}
 {{else}}
-⚠️ No work items linked to this deployment.
+⚠️ No user stories found for this deployment.
 {{/if}}
-
-
