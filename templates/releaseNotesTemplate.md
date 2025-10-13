@@ -1,42 +1,69 @@
-# 🚀 Release Notes - {{buildDetails.buildNumber}}
+## Build {{buildDetails.buildNumber}}
+* **Branch**: {{buildDetails.sourceBranch}}
+* **Tags**: {{buildDetails.tags}}
+* **Completed**: {{buildDetails.finishTime}}
+* **Previous Build**: {{compareBuildDetails.buildNumber}}
 
-**Release Date:** {{buildDetails.startTime}}  
-**Triggered By:** {{buildDetails.requestedFor.displayName}}
+## Associated Pull Requests ({{pullRequests.length}})
+{{#forEach pullRequests}}
+* **[{{this.pullRequestId}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}})** {{this.title}}
+* Associated Work Items
+{{#forEach this.associatedWorkitems}}
+   {{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}
+    - [{{this.id}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}}) - {{lookup this.fields 'System.Title'}}
+   {{/with}}
+{{/forEach}}
+* Associated Commits (this includes commits on the PR source branch not associated directly with the build)
+{{#forEach this.associatedCommits}}
+    - [{{this.commitId}}]({{this.remoteUrl}}) -  {{this.comment}}
+{{/forEach}}
+{{/forEach}}
 
----
-
-## 📌 Work Items
-
-| ID | Type | Title | Feature | Epic |
-|----|------|-------|---------|------|
-{{#each workItems}}
-| {{this.id}} 
-| {{lookup this.fields 'System.WorkItemType'}} 
-| [{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}}) 
-| {{#with (lookup this 'parents')}}
-  {{#each this}}
-    {{#if (eq (lookup this.fields 'System.WorkItemType') 'Feature')}}
-      [{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}})
-    {{/if}}
-  {{/each}}
-{{/with}} 
-| {{#with (lookup this 'parents')}}
-  {{#each this}}
-    {{#if (eq (lookup this.fields 'System.WorkItemType') 'Epic')}}
-      [{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}})
-    {{/if}}
-  {{/each}}
-{{/with}} |
-{{/each}}
-
----
-
-## 🔀 Pull Requests
-
-{{#if pullRequests.length}}
-{{#each pullRequests}}
-- [{{this.title}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}})
-{{/each}}
-{{else}}
-_No pull requests associated with this build._
+# Global list of WI with PRs, parents and children
+{{#forEach this.workItems}}
+{{#if isFirst}}### WorkItems {{/if}}
+*  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
+   - **WIT** {{lookup this.fields 'System.WorkItemType'}}
+   - **Tags** {{lookup this.fields 'System.Tags'}}
+   - **Assigned** {{#with (lookup this.fields 'System.AssignedTo')}} {{displayName}} {{/with}}
+   - **Description** {{{lookup this.fields 'System.Description'}}}
+   - **PRs**
+{{#forEach this.relations}}
+{{#if (contains this.attributes.name 'Pull Request')}}
+{{#with (lookup_a_pullrequest ../../pullRequests  this.url)}}
+      - {{this.pullRequestId}} - {{this.title}}
+{{/with}}
 {{/if}}
+{{/forEach}}
+   - **Parents**
+{{#forEach this.relations}}
+{{#if (contains this.attributes.name 'Parent')}}
+{{#with (lookup_a_work_item ../../relatedWorkItems  this.url)}}
+      - {{this.id}} - {{lookup this.fields 'System.Title'}}
+      {{#forEach this.relations}}
+      {{#if (contains this.attributes.name 'Parent')}}
+      {{#with (lookup_a_work_item ../../../../relatedWorkItems  this.url)}}
+         - {{this.id}} - {{lookup this.fields 'System.Title'}}
+      {{/with}}
+      {{/if}}
+      {{/forEach}}
+{{/with}}
+{{/if}}
+{{/forEach}}
+   - **Children**
+{{#forEach this.relations}}
+{{#if (contains this.attributes.name 'Child')}}
+{{#with (lookup_a_work_item ../../relatedWorkItems  this.url)}}
+      - {{this.id}} - {{lookup this.fields 'System.Title'}}
+{{/with}}
+{{/if}}
+{{/forEach}}
+   - **Tested By**
+{{#forEach this.relations}}
+{{#if (contains this.attributes.name 'Tested By')}}
+{{#with (lookup_a_work_item ../../testedByWorkItems  this.url)}}
+      - {{this.id}} - {{lookup this.fields 'System.Title'}}
+{{/with}}
+{{/if}}
+{{/forEach}}
+{{/forEach}}
