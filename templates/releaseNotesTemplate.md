@@ -33,6 +33,28 @@ No pull requests associated with this build.
 |---:|---|---|---|---|---|
 {{#forEach this.workItems}}
 | [#{{this.id}}]({{replace (replace (lookup this.fields 'System.Url') "_apis/wit/workItems" "_workitems/edit") "" ""}}) | {{lookup this.fields 'System.Title'}} | {{lookup this.fields 'System.WorkItemType'}} | {{#with (lookup this.fields 'System.AssignedTo')}}{{displayName}}{{else}}Unassigned{{/with}} | {{lookup this.fields 'System.Tags'}} | {{#forEach this.relations}}{{#if (contains this.attributes.name 'Pull Request')}}{{#with (lookup_a_pullrequest ../../pullRequests this.url)}}[#{{this.pullRequestId}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}}) {{/with}}{{/if}}{{/forEach}} |
+| ID | Title | Type | Assigned | Tags | Epic | PRs |
+|---:|---|---|---|---|---|---|
+| [#{{this.id}}]({{replace (replace (lookup this.fields 'System.Url') "_apis/wit/workItems" "_workitems/edit") "" ""}}) | {{lookup this.fields 'System.Title'}} | {{lookup this.fields 'System.WorkItemType'}} | {{#with (lookup this.fields 'System.AssignedTo')}}{{displayName}}{{else}}Unassigned{{/with}} | {{lookup this.fields 'System.Tags'}} | {{!-- Epic lookup: check parent then grandparent --}}
+{{#with (lookup this.fields 'System.Url') }}{{/with}}
+{{#if this.relations}}
+   {{#forEach this.relations}}
+      {{#if (contains this.attributes.name 'Parent')}}
+         {{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}
+            {{#if (contains (lookup this.fields 'System.WorkItemType') 'Epic')}}{{lookup this.fields 'System.Title'}}{{else}}
+               {{!-- check grandparent --}}
+               {{#forEach this.relations}}
+                  {{#if (contains this.attributes.name 'Parent')}}
+                     {{#with (lookup_a_work_item ../../../../relatedWorkItems this.url)}}
+                        {{#if (contains (lookup this.fields 'System.WorkItemType') 'Epic')}}{{lookup this.fields 'System.Title'}}{{/if}}
+                     {{/with}}
+                  {{/if}}
+               {{/forEach}}
+            {{/if}}
+         {{/with}}
+      {{/if}}
+   {{/forEach}}
+{{/if}} |
 {{/forEach}}
 {{else}}
 No work items found for this build.
