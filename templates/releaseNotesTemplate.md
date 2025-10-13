@@ -1,40 +1,24 @@
-# 🚀 Release Notes - {{buildDetails.buildNumber}}
+    # {{buildDetails.buildNumber}}
+    {{buildDetails.startTime}}
 
-**Release Date:** {{buildDetails.buildDate}}  
-**Triggered By:** {{buildDetails.requestedFor.displayName}}
+    **Work Items**
+    |Id|Type|Title|
+    |-|-|-|
+    {{#forEach this.workItems}}
+    |{{this.id}}|{{lookup this.fields 'System.WorkItemType'}}|[{{lookup this.fields 'System.Title'}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}})|
+    {{/forEach}}
 
----
-
-## 🧩 Work Items
-
-{{#if workItems}}
-{{#each workItems}}
-
-### 🔖 {{this.fields.System.Title}}
-
-**Type:** {{this.fields.System.WorkItemType}}  
-**Assigned To:** {{#if this.fields.System.AssignedTo}}{{this.fields.System.AssignedTo.displayName}}{{else}}Unassigned{{/if}}
-
-**Description:**  
-{{#if this.fields.System.Description}}  
-{{{this.fields.System.Description}}}  
-{{else}}  
-_No description provided._  
-{{/if}}
-
-{{#if this.parents}}
-#### 🔗 Parent Feature and Epic
-{{#each this.parents}}
-- **{{this.fields.System.WorkItemType}}**: {{this.fields.System.Title}}
-  {{#if this.parents}}
-  **Epic:** {{#each this.parents}}- {{this.fields.System.Title}}{{/each}}{{/if}}
-{{/each}}
-{{else}}
-_No parent feature or epic linked._  
-{{/if}}
-
----
-{{/each}}
-{{else}}
-⚠️ No work items linked to this build.
-{{/if}}
+    **Pull Requests**
+    {{#forEach pullRequests}}
+    * [{{this.title}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}})
+    {{/forEach}}
+    
+    checkStage: true
+    replaceFile: false
+    getParentsAndChildren: false
+    getAllParents: false
+    getIndirectPullRequests: false
+    stopOnError: false
+    considerPartiallySuccessfulReleases: false
+    checkForManuallyLinkedWI: false
+    wiqlFromTarget: 'WorkItems'
