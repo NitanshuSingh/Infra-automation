@@ -77,7 +77,6 @@ _No description provided._
 {{/if}}
 
 **Related PRs**
-{{#set _prCount 0}}{{/set}}
 {{#forEach this.relations}}
    {{#if (contains this.attributes.name 'Pull Request')}}
       {{#with (lookup_a_pullrequest ../../pullRequests this.url)}}
