@@ -49,3 +49,5 @@ stages:
         useAgentToken: true
         localpath: '$(System.DefaultWorkingDirectory)\repo'
         RetryMode: 'Pull'
+
+        
