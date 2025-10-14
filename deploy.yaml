@@ -12,7 +12,7 @@ stages:
     - script: echo "Deploying..."
   - job: GenerateAndPublishReleaseNotes
     dependsOn: BuildJob
-    stepss:
+    steps:
     - task: XplatGenerateReleaseNotes@4
       inputs:
         outputfile: '$(Build.ArtifactStagingDirectory)/releaseNotes.md'
